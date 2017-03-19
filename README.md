@@ -32,8 +32,8 @@ $ go get -u -v github.com/simukti/imageserver
 
 ## USAGE
 ```
-$ imageserver -s https://kadalkesit.storage.googleapis.com
-
+$ imageserver
+[ERROR] Flag param -s is required
 Usage:
   -h string
     	Host port to serve this app. (default "127.0.0.1:8080")
@@ -44,30 +44,37 @@ Usage:
   -s string
     	Source server base URL. (Example: https://kadalkesit.storage.googleapis.com)
   -t int
-    	Process timeout per image processing request. (default 5)
+    	Process timeout per image processing request. (default 30)
 ```
 
 ## SUPPORTED IMAGE PARAMETERS
 
 - **w**
+
     Output width (in pixel)
 
 - **h**
+
     Output height (in pixel)
 
 - **q**
+    
     Output quality (JPG default 75)
 
 - **fmt**
+
     Output format (default: same as source)
 
 - **blur**
+
     Output image blur level (1-50)
 
 - **c**
+
     Output colour space (srgb, bw)
 
 - **flip**
+
     Output image flip (h : flip horizontally, v : flip vertically)
 
 
@@ -78,22 +85,27 @@ I use [my photo from flickr](https://www.flickr.com/photos/simukti/8045877062/).
 $ imageserver -s https://c1.staticflickr.com
 ```
 
-Original flickr: `https://c1.staticflickr.com/9/8173/8045877062_481f4e80b4_b.jpg`
+- Original flickr: `https://c1.staticflickr.com/9/8173/8045877062_481f4e80b4_b.jpg`
+
 Size: 313.95 KB (321485 bytes)
 
-Parsed as jpg (default): `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg`
+- Parsed as jpg (default): `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg`
+
 Size: 137.58 KB (140882 bytes)
 
-Parsed as webp: `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg?fmt=webp`
+- Parsed as webp: `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg?fmt=webp`
+
 Size: 131.63 KB (134786 bytes)
 
-Parsed as png: `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg?fmt=png`
+- Parsed as png: `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg?fmt=png`
+
 Size: 1,587.41 KB (1,625,510 bytes) !!!
 
 ## NOTE
 Source image file will be downloaded once and saved to master source folder. 
 Result file will be saved to result folder using filename based on hashed request params. 
 If requested params already exists that file will be returned without any further processing.
+
 Is it fast ?? hmmm... I think it depends on hardware configuration ;) try it yourself. 
 
 ## LICENSE
