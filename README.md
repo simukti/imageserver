@@ -8,10 +8,10 @@ brew update
 brew install vips --with-webp
 ```
 
-Tested on:
+Tested On:
 ```
-$ uname -a
-Darwin smx 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017; root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64
+$ uname -v
+Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017; root:xnu-3248.60.11.2.1~1/RELEASE_X86_64
 
 $ go version
 go version go1.8 darwin/amd64
@@ -85,21 +85,21 @@ I use [my photo from flickr](https://www.flickr.com/photos/simukti/8045877062/).
 $ imageserver -s https://c1.staticflickr.com
 ```
 
-- Original flickr: `https://c1.staticflickr.com/9/8173/8045877062_481f4e80b4_b.jpg`
+- Original Flickr: `https://c1.staticflickr.com/9/8173/8045877062_481f4e80b4_b.jpg`
 
-Size: 313.95 KB (321485 bytes)
+    313.95 KB (321485 bytes)
 
 - Parsed as jpg (default): `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg`
 
-Size: 137.58 KB (140882 bytes)
+    137.58 KB (140882 bytes)
 
 - Parsed as webp: `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg?fmt=webp`
 
-Size: 131.63 KB (134786 bytes)
+    131.63 KB (134786 bytes)
 
 - Parsed as png: `http://127.0.0.1:8080/9/8173/8045877062_481f4e80b4_b.jpg?fmt=png`
 
-Size: 1,587.41 KB (1,625,510 bytes) !!!
+    1,587.41 KB (1,625,510 bytes) !!!
 
 ## NOTE
 Source image file will be downloaded once and saved to master source folder. 
