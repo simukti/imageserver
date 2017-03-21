@@ -8,6 +8,11 @@ brew update
 brew install vips --with-webp
 ```
 
+On Linux
+```
+sudo ./vips_install.sh
+```
+
 Tested On:
 ```
 $ uname -v
