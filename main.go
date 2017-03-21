@@ -24,10 +24,10 @@ import (
 
 var (
 	sourceServer string
-	masterDir    string
-	resultDir    string
-	hostPort     string
-	timeout      int
+	masterDir string
+	resultDir string
+	hostPort string
+	timeout int
 )
 
 func main() {
@@ -111,13 +111,13 @@ func requestHandler(req *fasthttp.RequestCtx) {
 
 	params := image.ValidateParams(reqQuery)
 	source, _ := url.Parse(sourceServer)
-	source.Path = path.Join(string(reqPath))
+	source.Path = path.Join(source.Path, string(reqPath))
 
 	imageJob := image.Job{
 		MasterDir:  masterDir,
 		ResultDir:  resultDir,
 		SourceURL:  source.String(),
-		SourcePath: string(reqPath),
+		SourcePath: source.Path,
 		Params:     params,
 	}
 
