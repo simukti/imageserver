@@ -4,7 +4,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -20,6 +19,7 @@ import (
 	"github.com/simukti/imageserver/image"
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/reuseport"
+	"strings"
 )
 
 var (
@@ -91,15 +91,15 @@ func requestHandler(req *fasthttp.RequestCtx) {
 		return
 	}
 
-	reqPath := req.Path()
+	reqPath := string(req.Path())
 
-	if bytes.Equal(reqPath, []byte("/")) {
+	if reqPath == "/" {
 		req.SetStatusCode(fasthttp.StatusOK)
 		req.SetBody([]byte("ImageServer"))
 		return
 	}
 
-	if bytes.Equal(reqPath, []byte("/favicon.ico")) {
+	if strings.ToLower(reqPath) == "/favicon.ico" {
 		req.SetStatusCode(fasthttp.StatusNotFound)
 		return
 	}
@@ -111,7 +111,7 @@ func requestHandler(req *fasthttp.RequestCtx) {
 
 	params := image.ValidateParams(reqQuery)
 	source, _ := url.Parse(sourceServer)
-	source.Path = path.Join(source.Path, string(reqPath))
+	source.Path = path.Join(source.Path, reqPath)
 
 	imageJob := image.Job{
 		MasterDir:  masterDir,
