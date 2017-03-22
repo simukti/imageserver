@@ -24,10 +24,10 @@ import (
 
 var (
 	sourceServer string
-	masterDir string
-	resultDir string
-	hostPort string
-	timeout int
+	masterDir    string
+	resultDir    string
+	hostPort     string
+	timeout      int
 )
 
 func main() {
