@@ -4,11 +4,10 @@
 package image
 
 import (
+	"github.com/h2non/bimg"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/h2non/bimg"
 )
 
 // Params Supported request params for transformation
