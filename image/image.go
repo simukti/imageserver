@@ -21,6 +21,7 @@ type Params struct {
 	Flop    bool                `json:"flop,omitempty"`
 	Colour  bimg.Interpretation `json:"c,omitempty"`
 	Format  bimg.ImageType      `json:"fmt,omitempty"`
+	Fit     string              `json:"fit,omitempty"`
 }
 
 // Job Main job for image transformation
@@ -52,15 +53,16 @@ func (job *Job) Process() error {
 
 	params := job.Params
 	options := bimg.Options{
-		Enlarge:        false,
-		Force:          false,
-		NoProfile:      true,
-		NoAutoRotate:   true,
-		Crop:           true,
-		Embed:          false,
-		Interlace:      true,
-		Compression:    9,
-		Interpolator:   bimg.Bicubic,
+		Enlarge:      false,
+		Force:        false,
+		NoProfile:    true,
+		NoAutoRotate: true,
+		Crop:         false,
+		Embed:        false,
+		Interlace:    true,
+		Compression:  9,
+		// http://nickyguides.digital-digest.com/bilinear-vs-bicubic.htm
+		Interpolator:   bimg.Bilinear,
 		Interpretation: params.Colour,
 		Type:           params.Format,
 		Quality:        params.Quality,
@@ -85,17 +87,21 @@ func (job *Job) Process() error {
 		options.Interpretation = bimg.InterpretationSRGB
 	}
 
+	if params.Width > imageSize.Width {
+		params.Width = imageSize.Width
+	}
+
+	if params.Height > imageSize.Height {
+		params.Height = imageSize.Height
+	}
+
 	if params.Width > 0 && params.Height == 0 {
-		params.Height = params.Width
-	} else if params.Height > 0 && params.Width == 0 {
-		params.Width = params.Height
-	}
-
-	if params.Width > 0 && params.Width < imageSize.Width {
 		options.Width = params.Width
-	}
-
-	if params.Height > 0 && options.Height < imageSize.Height {
+	} else if params.Height > 0 && params.Width == 0 {
+		options.Height = params.Height
+	} else {
+		options.Crop = true
+		options.Width = params.Width
 		options.Height = params.Height
 	}
 
