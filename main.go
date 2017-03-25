@@ -22,11 +22,14 @@ import (
 )
 
 var (
-	sourceServer string
-	masterDir    string
-	resultDir    string
-	hostPort     string
-	timeout      int
+	sourceServer      string
+	masterDir         string
+	resultDir         string
+	hostPort          string
+	timeout           int
+	allowedPathPrefix string
+	// map storage for splitted allowedPrefix's values
+	prefixMap = map[string]bool{}
 )
 
 func main() {
@@ -37,6 +40,7 @@ func main() {
 	flag.StringVar(&masterDir, "m", "/tmp/imgsrv_master", "Directory for master image storage.")
 	flag.StringVar(&resultDir, "r", "/tmp/imgsrv_result", "Directory for result image storage.")
 	flag.StringVar(&hostPort, "h", "127.0.0.1:8080", "Host port to serve this app.")
+	flag.StringVar(&allowedPathPrefix, "app", "*", "Allowed path prefix from source server, comma-separated for multiple values.")
 	flag.IntVar(&timeout, "t", 30, "Process timeout per image processing request.")
 	flag.Parse()
 	flag.VisitAll(func(f *flag.Flag) {
@@ -57,6 +61,14 @@ func main() {
 	if err := ensureDir(resultDir); err != nil {
 		log.Fatal(err)
 		os.Exit(0)
+	}
+
+	if allowedPathPrefix != "*" {
+		// store allowed prefix in map for faster lookup
+		rp := strings.Split(allowedPathPrefix, ",")
+		for _, p := range rp {
+			prefixMap[p] = true
+		}
 	}
 
 	server := fasthttp.Server{
@@ -100,7 +112,17 @@ func requestHandler(req *fasthttp.RequestCtx) {
 
 	if strings.ToLower(reqPath) == "/favicon.ico" {
 		req.SetStatusCode(fasthttp.StatusNotFound)
+		req.SetBody([]byte(fasthttp.StatusMessage(fasthttp.StatusNotFound)))
 		return
+	}
+
+	if allowedPathPrefix != "*" {
+		ps := strings.SplitN(reqPath, "/", 3)
+		if !prefixMap[ps[1]] {
+			req.SetStatusCode(fasthttp.StatusForbidden)
+			req.SetBody([]byte(fasthttp.StatusMessage(fasthttp.StatusForbidden)))
+			return
+		}
 	}
 
 	reqQuery, err := url.ParseQuery(req.QueryArgs().String())
