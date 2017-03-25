@@ -8,13 +8,17 @@ brew update
 brew install vips --with-webp
 ```
 
-On Linux
+On Linux:
 ```
 sudo ./vips_install.sh
 ```
 
 Tested On:
 ```
+Machine: MacBook Pro (Retina, 15-inch, Mid 2014)
+Processor: 2,5 GHz Intel Core i7
+Memory: 16 GB 1600 MHz DDR3
+
 $ uname -v
 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017; root:xnu-3248.60.11.2.1~1/RELEASE_X86_64
 
@@ -24,10 +28,20 @@ go version go1.8 darwin/amd64
 $ vips -v
 vips-8.4.5-Sun Mar 19 07:06:21 WIB 2017
 
----
-Machine: MacBook Pro (Retina, 15-inch, Mid 2014)
-Processor: 2,5 GHz Intel Core i7
-Memory: 16 GB 1600 MHz DDR3
+------------
+
+VM: Centos7-64bit
+Processor: SingleCore
+Memory: 768 MB
+
+$ uname -a
+Linux localhost.localdomain 3.10.0-327.36.1.el7.x86_64 #1 SMP Sun Sep 18 13:04:29 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+
+$ go version
+go version go1.8 linux/amd64
+
+$ vips -v
+vips-8.4.5-Tue Mar 21 10:55:22 UTC 2017
 ```
 
 ## INSTALL
@@ -40,6 +54,8 @@ $ go get -u -v github.com/simukti/imageserver
 $ imageserver
 [ERROR] Flag param -s is required
 Usage:
+  -app string
+    	Allowed path prefix from source server, comma-separated for multiple values. (default "*")
   -h string
     	Host port to serve this app. (default "127.0.0.1:8080")
   -m string
@@ -51,6 +67,20 @@ Usage:
   -t int
     	Process timeout per image processing request. (default 30)
 ```
+
+Sample with allowed prefix path:
+```
+$ imageserver -s https://storage.googleapis.com -h :8080 -app kadalkesit,kadalkesit-dev
+```
+
+Server will allow request:
+
+-  http://yourhost:8080/kadalkesit/path/to/your/image.jpg
+-  http://yourhost:8080/kadalkesit-dev/path/to/your/image.jpg
+
+BUT NOT:
+
+-  http://yourhost:8080/random-bucket/path/to/another/image.jpg
 
 ## SUPPORTED IMAGE PARAMETERS
 
