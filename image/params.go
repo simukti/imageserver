@@ -4,10 +4,11 @@
 package image
 
 import (
-	"github.com/h2non/bimg"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/h2non/bimg"
 )
 
 var (

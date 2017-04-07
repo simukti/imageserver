@@ -7,10 +7,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/minio/blake2b-simd"
-	"github.com/simukti/imageserver/image"
-	"github.com/valyala/fasthttp"
-	"github.com/valyala/fasthttp/reuseport"
 	"log"
 	"net/url"
 	"os"
@@ -19,6 +15,11 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/minio/blake2b-simd"
+	"github.com/simukti/imageserver/image"
+	"github.com/valyala/fasthttp"
+	"github.com/valyala/fasthttp/reuseport"
 )
 
 var (

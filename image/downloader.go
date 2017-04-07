@@ -5,9 +5,10 @@ package image
 
 import (
 	"fmt"
-	"github.com/valyala/fasthttp"
 	"os"
 	"path/filepath"
+
+	"github.com/valyala/fasthttp"
 )
 
 // DownloadJob Master image download definition
